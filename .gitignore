@@ -1,0 +1,16 @@
+# smart contract ignore
+smart-contracts/node_modules
+smart-contracts/.env
+smart-contracts/coverage
+smart-contracts/coverage.json
+smart-contracts/typechain
+smart-contracts/typechain-types
+smart-contracts/nft-metadata
+
+# hardhat file ignore
+smart-contracts/cache
+smart-contracts/artifacts
+
+# nft-file ignore
+nft-api/node_modules
+nft-api/.env
