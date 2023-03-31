@@ -15,6 +15,7 @@
       "error",
       "^0.8.17"
     ],
-	"reason-string": "none"
+	"reason-string": "none",
+	"not-rely-on-time": "none"
   }
 }
