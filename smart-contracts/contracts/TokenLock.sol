@@ -121,7 +121,6 @@ contract TokenLock is
 	 * 
 	 * Requirements:
 	 * - `_beneficiary` cannot be the zero address
-	 * - `_beneficiary` must not have a schedule
 	 * - `_amount` cannot be 0
 	 * - `_releaseTime` cannot be before current time
 	 * - `_amount` must be approved by the sender
@@ -137,7 +136,6 @@ contract TokenLock is
 		require(_amount > 0, "TokenLock: amount is 0");
 		require(_releaseTime > block.timestamp, "TokenLock: release time is before current time");
 		Schedule storage schedule = beneficiarySchedules[_beneficiary];
-		require(schedule.total == 0, "TokenLock: schedule already exists");
 		schedule.total = _amount;
 		schedule.releaseTime = _releaseTime;
 		totalTokenBalance += _amount;
