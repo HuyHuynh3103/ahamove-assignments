@@ -53,18 +53,26 @@ describe("TokenLock", function () {
     const getErrorUnauthorized = (address: string, role: string) => {
       return `AccessControl: account ${address.toLowerCase()} is missing role ${role}`;
     };
-    let amount: BigNumber,
+    let owner: SignerWithAddress,
+      amount: BigNumber,
       future: number,
       past: number,
       tokenContract: Contract,
       lockContract: Contract;
     beforeEach(async function () {
-      ({ tokenContract, lockContract } = await loadFixture(deployFixture));
+      ({ owner, tokenContract, lockContract } = await loadFixture(
+        deployFixture
+      ));
       amount = parseEther(500);
-      future = getUnixTime(new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3));
-      past = getUnixTime(new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3));
+      future = getUnixTime(
+        new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3)
+      );
+      past = getUnixTime(
+        new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3)
+      );
     });
-    describe("Create batch schedules", function () {});
+    describe("Create batch schedules", function () {
+	});
     describe("Create a schedule", function () {
       describe("And rejected because", function () {
         it("caller does not have admin role => rejected", async function () {
@@ -72,11 +80,7 @@ describe("TokenLock", function () {
           await expect(
             lockContract
               .connect(caller)
-              .createSchedule(
-                beneficiary.address,
-                amount.toString(),
-                future
-              )
+              .createSchedule(beneficiary.address, amount.toString(), future)
           ).to.be.revertedWith(
             getErrorUnauthorized(caller.address, DEFAULT_ADMIN_ROLE)
           );
@@ -142,9 +146,50 @@ describe("TokenLock", function () {
             .to.emit(lockContract, "ScheduleCreated")
             .withArgs(beneficiary.address, amount.toString(), future);
         });
+        it("new schedule is created", async function () {
+          const [, beneficiary] = await ethers.getSigners();
+          await lockContract.createSchedule(
+            beneficiary.address,
+            amount.toString(),
+            future
+          );
+          const schedule = await lockContract.beneficiarySchedules(
+            beneficiary.address
+          );
+          expect(schedule.total).to.equal(amount);
+          expect(schedule.released).to.equal(0);
+          expect(schedule.releaseTime).to.equal(future);
+        });
+        it("total token locked is increased", async function () {
+          const [, beneficiary] = await ethers.getSigners();
+          const totalLockedBefore = await lockContract.totalTokenBalance();
+          await lockContract.createSchedule(
+            beneficiary.address,
+            amount.toString(),
+            future
+          );
+          const totalLocked = await lockContract.totalTokenBalance();
+          expect(totalLocked).to.equal(totalLockedBefore.add(amount));
+        });
+        it("amount token is transferred to lock contract", async function () {
+          const [, beneficiary] = await ethers.getSigners();
+          await expect(
+            lockContract.createSchedule(
+              beneficiary.address,
+              amount.toString(),
+              future
+            )
+          ).to.changeTokenBalances(
+            tokenContract,
+            [owner, lockContract],
+            [amount.mul(-1), amount]
+          );
+        });
       });
     });
   });
-  describe("Release", function () {});
+  describe("Release", function () {
+
+  });
   describe("ACL call", function () {});
 });
