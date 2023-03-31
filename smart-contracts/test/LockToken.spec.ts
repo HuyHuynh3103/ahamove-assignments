@@ -4,6 +4,7 @@ import { expect } from "chai";
 import { BigNumber, Contract } from "ethers";
 import { ethers, upgrades } from "hardhat";
 import { keccak256, parseEther } from "../helpers/ether-helper";
+import { getUnixTime } from "date-fns";
 
 describe("TokenLock", function () {
   const DEFAULT_ADMIN_ROLE =
@@ -53,17 +54,15 @@ describe("TokenLock", function () {
       return `AccessControl: account ${address.toLowerCase()} is missing role ${role}`;
     };
     let amount: BigNumber,
-      future: Date,
-      past: Date,
+      future: number,
+      past: number,
       tokenContract: Contract,
       lockContract: Contract;
     beforeEach(async function () {
-      ({ tokenContract, lockContract } = await loadFixture(
-        deployFixture
-      ));
+      ({ tokenContract, lockContract } = await loadFixture(deployFixture));
       amount = parseEther(500);
-      future = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3);
-      past = new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3);
+      future = getUnixTime(new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3));
+      past = getUnixTime(new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 3));
     });
     describe("Create batch schedules", function () {});
     describe("Create a schedule", function () {
@@ -76,7 +75,7 @@ describe("TokenLock", function () {
               .createSchedule(
                 beneficiary.address,
                 amount.toString(),
-                future.getTime()
+                future
               )
           ).to.be.revertedWith(
             getErrorUnauthorized(caller.address, DEFAULT_ADMIN_ROLE)
@@ -88,18 +87,18 @@ describe("TokenLock", function () {
             lockContract.createSchedule(
               addressZero.toString(),
               amount.toString(),
-              future.getTime()
+              future
             )
           ).to.be.revertedWith("TokenLock: beneficiary is the zero address");
         });
         it("`_amount` is zero => rejected", async function () {
           const [, beneficiary] = await ethers.getSigners();
-          const zeroAmount = parseEther(0);
+          const zeroAmount = 0;
           await expect(
-			  lockContract.createSchedule(
+            lockContract.createSchedule(
               beneficiary.address,
               zeroAmount.toString(),
-              future.getTime()
+              future
             )
           ).to.be.revertedWith("TokenLock: amount is 0");
         });
@@ -109,9 +108,11 @@ describe("TokenLock", function () {
             lockContract.createSchedule(
               beneficiary.address,
               amount.toString(),
-              past.getTime()
+              past
             )
-          ).to.be.revertedWith("TokenLock: amount is 0");
+          ).to.be.revertedWith(
+            "TokenLock: release time is before current time"
+          );
         });
         it("`_amount` token have not be approved before call", async function () {
           const [, beneficiary] = await ethers.getSigners();
@@ -119,7 +120,7 @@ describe("TokenLock", function () {
             lockContract.createSchedule(
               beneficiary.address,
               amount.toString(),
-              future.getTime()
+              future
             )
           ).to.be.revertedWith("ERC20: insufficient allowance");
         });
@@ -135,11 +136,11 @@ describe("TokenLock", function () {
             lockContract.createSchedule(
               beneficiary.address,
               amount.toString(),
-              future.getTime()
+              future
             )
           )
             .to.emit(lockContract, "ScheduleCreated")
-            .withArgs(beneficiary.address, amount.toString(), future.getTime());
+            .withArgs(beneficiary.address, amount.toString(), future);
         });
       });
     });
