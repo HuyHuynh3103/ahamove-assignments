@@ -29,7 +29,8 @@ contract TokenLock is
 
 	using SafeERC20Upgradeable for IERC20Upgradeable;
 
-    constructor() {
+    /// @custom:oz-upgrades-unsafe-allow constructor
+	constructor() {
         _disableInitializers();
     }
 	

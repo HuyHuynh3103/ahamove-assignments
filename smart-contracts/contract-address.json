@@ -1,0 +1,19 @@
+{
+  "bscTest": {
+    "ERC20Token": {
+      "proxy": "0xb595dba6F430a74ff1ed9cD86A28020B1c7a9ed3",
+      "implement": "0x83Ba866e92DF34E67BD72c6f9853797b527A6d96",
+      "params": [
+        "SpiderBlock",
+        "SPB"
+      ]
+    },
+    "TokenLock": {
+      "proxy": "0x5A1F0E3C0372193207E9c3346a3CcE8e37d5e4a6",
+      "implement": "0x639f473d0422FEF13e1f922821f22F2766795FF9",
+      "params": [
+        "0xb595dba6F430a74ff1ed9cD86A28020B1c7a9ed3"
+      ]
+    }
+  }
+}

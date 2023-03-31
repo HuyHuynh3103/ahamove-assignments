@@ -1,6 +1,6 @@
 import {promises as fs} from 'fs';
 
-const CONFIG_FILE_PATH = './config.json';
+const CONFIG_FILE_PATH = './contract-address.json';
 class ConfigFile {
 	private config: any;
 	constructor(){}

@@ -12,11 +12,14 @@ async function main() {
   	console.log(`Signer Address: ${await deployer.getAddress()}`)
   	
 	// deploy contract script 
-	await deployProxy([
-        "0x2a47d693800350301ad76a736519d776E306f1d3",
-        "0x0986e90fdEFF82ad872E6240149F29AFf68F9119"
-	], "TokenLock", config);	
+	const tokenContract = await deployProxy([
+		"SpiderBlock", "SPB"
+	], "ERC20Token", config);	
 	
+	await deployProxy([
+		tokenContract.address
+	], "TokenLock", config);
+
 
 	// update config
 	await config.updateConfig();
