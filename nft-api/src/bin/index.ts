@@ -3,6 +3,7 @@ import { COLORS } from "../common/color";
 import { ENV } from "../common/env";
 import listEndpoints from 'express-list-endpoints';
 import app from "../app";
+import Moralis from "moralis";
 /**
  * Normalize a port into a number, string, or false.
  */
@@ -61,6 +62,13 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+
+/**
+ * Start Moralis server
+ */
+Moralis.start({
+	apiKey: ENV.MORALIS_API_KEY,
+})
 
 /**
  * Listen on provided port, on all network interfaces.

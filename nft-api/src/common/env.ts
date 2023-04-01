@@ -7,4 +7,5 @@ export const ENV = {
 	RPC_MAINNET: process.env.RPC_MAINNET,
 	RPC_TESTNET: process.env.RPC_TESTNET,
 	CHAIN_ID: process.env.CHAIN_ID,
+	MORALIS_API_KEY: process.env.MORALIS_API_KEY,
 }

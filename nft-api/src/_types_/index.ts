@@ -23,6 +23,18 @@ export interface INftItem {
     highestBid?: number;
 }
 
+export interface INftMoralisItem {
+	token_id?: string;
+	token_address?: string;
+	token_uri?: string;
+	owner_of?: string;
+	amount?: string;
+	contract_type?: string;
+	name?: string;
+	symbol?: string;
+	metadata?: string;
+
+}
 
 export interface IEvent {
     params?: any
