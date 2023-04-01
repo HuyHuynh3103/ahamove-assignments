@@ -53,7 +53,4 @@ Api documents:
 ```
 - Get all transaction related to NFTs in user wallet: `GET /api/nft/get-all-transaction?address=0x329deB4343f9CA7B6234304C76A3BE1092C32065`
 
-Link to postman collection: 
-```url
-https://www.postman.com/huynh-ba-huy/workspace/ahamove/collection/17770807-f4e3323b-256c-4a66-850d-e77d8390b140?action=share&creator=17770807
-```
+Link to postman collection: [Postman Collection](https://www.postman.com/huynh-ba-huy/workspace/ahamove/collection/17770807-f4e3323b-256c-4a66-850d-e77d8390b140?action=share&creator=17770807)
