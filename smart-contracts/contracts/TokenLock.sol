@@ -134,7 +134,7 @@ contract TokenLock is
 	) internal {
 		require(_beneficiary != address(0), "TokenLock: beneficiary is the zero address");
 		require(_amount > 0, "TokenLock: amount is 0");
-		require(_releaseTime > block.timestamp, "TokenLock: release time is before current time");
+		require(_releaseTime > block.timestamp, "TokenLock: release time is before than current time");
 		Schedule storage schedule = beneficiarySchedules[_beneficiary];
 		schedule.total = _amount;
 		schedule.releaseTime = _releaseTime;
@@ -151,7 +151,6 @@ contract TokenLock is
 	 * - `_amount` cannot be 0
 	 * - `_amount` must be less than or equal to the available balance
 	 * - current time must be greater than or equal to the release time
-	 * - the total amount to release must be greater than 0
 	 * 
 	 * Emits a {Released} event.
 	 */
@@ -160,10 +159,9 @@ contract TokenLock is
 	) external nonReentrant {
 		address _sender = _msgSender();
 		require(_amount > 0, "TokenLock: amount is 0");
-		require(_amount <= _availableBalance(_msgSender()), "TokenLock: amount is greater than available balance");
+		require(_amount <= _availableBalance(_msgSender()), "TokenLock: amount is exceeding available balance");
 		Schedule memory schedule = beneficiarySchedules[_sender];
-		require(schedule.releaseTime <= block.timestamp, "TokenLock: current time is before release time");
-		require(schedule.total > 0, "TokenLock: no tokens to release");
+		require(schedule.releaseTime <= block.timestamp, "TokenLock: current time is before than release time");
 		_lockToken.safeTransfer(_sender, _amount);
 		schedule.released += _amount;
 
@@ -173,9 +171,16 @@ contract TokenLock is
 
 		emit Released(_sender, _amount);
 	}
-
 	/**
-	 * @dev Get the available balance of the beneficiary
+	 * @dev See {_availableBalance}
+	 * @param _beneficiary 		The address of the beneficiary
+	 * @return 					The available balance of the beneficiary
+	 */
+	function availableBalance(address _beneficiary) external view returns(uint96) {
+		return _availableBalance(_beneficiary);
+	}
+	/**
+	 * @dev Internally get the available balance of the beneficiary
 	 * @param _beneficiary 		The address of the beneficiary
 	 * @return 					The available balance of the beneficiary
 	 */
@@ -184,13 +189,13 @@ contract TokenLock is
 		if(schedule.released >= schedule.total) {
 			return 0;
 		}
-		uint96 availableBalance = schedule.total - schedule.released;
-		if(availableBalance > totalTokenBalance) {
+		uint96 available = schedule.total - schedule.released;
+		if(available > totalTokenBalance) {
 			return totalTokenBalance;
 		}
-		return availableBalance;
+		return available;
 	}
-
+	
 	/**
 	 * @dev Upgrade the contract
 	 * @param newImplementation The address of the new implementation

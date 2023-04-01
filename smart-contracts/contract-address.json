@@ -10,7 +10,7 @@
     },
     "TokenLock": {
       "proxy": "0x5A1F0E3C0372193207E9c3346a3CcE8e37d5e4a6",
-      "implement": "0x834017FC986468b22aA4A12418e2518C1a0A9d60",
+      "implement": "0x80A9973c7e38cD270396287f5d0f0764de36BDd8",
       "params": [
         "0xb595dba6F430a74ff1ed9cD86A28020B1c7a9ed3"
       ]
