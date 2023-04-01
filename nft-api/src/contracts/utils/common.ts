@@ -1,3 +1,5 @@
+import { ENV } from "../../common/env";
+
 export type AddressType = {
     97: string;
     56: string;
@@ -9,18 +11,15 @@ export enum CHAIN_ID {
 }
 
 export default function getChainIdFromEnv(): number {
-    const env = process.env.NEXT_PUBLIC_CHAIN_ID;
-    if (!env) {
-        return 97;
-    }
+    const env = ENV.CHAIN_ID ?? "97";
     return parseInt(env);
 }
 
 export const getRPC = () => {
     if (getChainIdFromEnv() === CHAIN_ID.MAINNET) {
-        return process.env.NEXT_PUBLIC_RPC_MAINNET;
+        return ENV.RPC_MAINNET;
     }
-    return process.env.NEXT_PUBLIC_RPC_TESTNET;
+    return ENV.RPC_TESTNET;
 };
 
 export const getDesiredGateWay = () => {
@@ -29,11 +28,7 @@ export const getDesiredGateWay = () => {
 
 export const SMART_ADDRESS = {
     NFT: {
-        97: "0x0986e90fdEFF82ad872E6240149F29AFf68F9119",
-        56: "",
-    },
-    SPIDERBLOCK: {
-        97: "0x2a47d693800350301ad76a736519d776E306f1d3",
+        97: "0x81cec8aC9f5e068f04a8De8225D985816370D5ee",
         56: "",
     },
 };

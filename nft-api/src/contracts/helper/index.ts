@@ -1,6 +1,6 @@
 import ConversionHelper from "./conversion";
-import IpfsHelper from "./ipfs";
+import AddressHelper from "./address";
 export {
 	ConversionHelper, 
-	IpfsHelper
+	AddressHelper
 }

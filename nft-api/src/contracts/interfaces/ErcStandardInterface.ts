@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ConversionHelper } from "../helper";
+import { AddressHelper, ConversionHelper } from "../helper";
 import BaseInterface from "./BaseInterface";
 
 class ErcStandardInterface extends BaseInterface {
@@ -12,6 +12,8 @@ class ErcStandardInterface extends BaseInterface {
 	}
 	
 	async balanceOf(walletAddress: string): Promise<number>{
+		if(!AddressHelper.isAddress(walletAddress))
+			throw new Error("Invalid address");
 		const balance = await this._contract.balanceOf(walletAddress);
 		return ConversionHelper._toNumber(balance);
 	}

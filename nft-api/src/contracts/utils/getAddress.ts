@@ -6,4 +6,3 @@ const getAddress = (address: AddressType) => {
 };
 
 export const getNftAddress = () => getAddress(SMART_ADDRESS.NFT);
-export const getSpiderBlockAddress = () => getAddress(SMART_ADDRESS.SPIDERBLOCK);

@@ -1,9 +1,7 @@
 import { Signer } from "ethers";
 import { ethers } from "hardhat";
 import ConfigFile from "../helpers/config";
-import constants from "../helpers/constants";
 import { deploy, deployProxy } from "../helpers/deploy";
-import { parseEther } from "../helpers/ether-helper";
 async function main() {
 	// init
 	const config = new ConfigFile();
@@ -11,7 +9,7 @@ async function main() {
   	const deployer: Signer = ethers.provider.getSigner();
   	console.log(`Signer Address: ${await deployer.getAddress()}`)
   	
-	// deploy contract script 
+	// // deploy contract script 
 	const tokenContract = await deployProxy([
 		"SpiderBlock", "SPB"
 	], "ERC20Token", config);	
@@ -20,6 +18,8 @@ async function main() {
 		tokenContract.address
 	], "TokenLock", config);
 
+	// deploy erc721 contract
+	await deploy([], "NFT", deployer, config);
 
 	// update config
 	await config.updateConfig();

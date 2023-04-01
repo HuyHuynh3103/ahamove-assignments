@@ -1,7 +1,7 @@
 {
   "bscTest": {
     "ERC20Token": {
-      "proxy": "0xb595dba6F430a74ff1ed9cD86A28020B1c7a9ed3",
+      "proxy": "0x6CA44f04Af86Bff86D59c43935Bb9Cb185b7e299",
       "implement": "0x83Ba866e92DF34E67BD72c6f9853797b527A6d96",
       "params": [
         "SpiderBlock",
@@ -9,11 +9,15 @@
       ]
     },
     "TokenLock": {
-      "proxy": "0x5A1F0E3C0372193207E9c3346a3CcE8e37d5e4a6",
+      "proxy": "0x753AD129D635C8AeFb3FEd0F834408a4A3936B37",
       "implement": "0x80A9973c7e38cD270396287f5d0f0764de36BDd8",
       "params": [
-        "0xb595dba6F430a74ff1ed9cD86A28020B1c7a9ed3"
+        "0x6CA44f04Af86Bff86D59c43935Bb9Cb185b7e299"
       ]
+    },
+    "NFT": {
+      "contract": "0x81cec8aC9f5e068f04a8De8225D985816370D5ee",
+      "params": []
     }
   }
 }

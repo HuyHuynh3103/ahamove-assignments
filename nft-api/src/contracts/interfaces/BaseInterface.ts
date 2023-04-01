@@ -26,4 +26,10 @@ export default class BaseInterface {
             throw new Error(er?.reason || `${er}`);
         }
     };
+	connect = (signer: ethers.Signer) => {
+		this._provider = signer;
+		this._contract = this._contract.connect(signer);
+		
+		return this;
+	};
 }
